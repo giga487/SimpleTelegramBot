@@ -57,9 +57,15 @@ public sealed class TelegramBotClient(
             throw new TelegramConfigurationException("Telegram:ChatId is not configured.");
         }
 
-        if (!Uri.TryCreate(options.ApiBaseUrl, UriKind.Absolute, out _))
+        if (!Uri.TryCreate(options.ApiBaseUrl, UriKind.Absolute, out var apiBaseUri) ||
+            (apiBaseUri.Scheme != Uri.UriSchemeHttp && apiBaseUri.Scheme != Uri.UriSchemeHttps))
         {
-            throw new TelegramConfigurationException("Telegram:ApiBaseUrl must be an absolute URL.");
+            throw new TelegramConfigurationException("Telegram:ApiBaseUrl must be an absolute HTTP or HTTPS URL.");
+        }
+
+        if (options.BotToken.StartsWith("bot", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new TelegramConfigurationException("Telegram:BotToken must be the raw token without the 'bot' prefix.");
         }
     }
 
@@ -86,7 +92,7 @@ public sealed class TelegramBotClient(
             ? options.ApiBaseUrl
             : $"{options.ApiBaseUrl}/";
 
-        return new Uri(new Uri(baseUrl), $"bot{options.BotToken}/sendMessage");
+        return new Uri(new Uri(baseUrl), $"bot{Uri.EscapeDataString(options.BotToken)}/sendMessage");
     }
 
     private static int? ReadMessageId(string responseBody)

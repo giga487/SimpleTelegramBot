@@ -65,3 +65,19 @@ Le pagine incluse chiamano le API dalla stessa origin, quindi CORS non serve. Se
 ```powershell
 dotnet run
 ```
+
+## User secrets in sviluppo
+
+In ambiente `Development` è preferibile mettere i dati sensibili nei .NET user secrets:
+
+```powershell
+dotnet user-secrets set "Telegram:BotToken" "TOKEN_DEL_BOT"
+dotnet user-secrets set "Telegram:ChatId" "@nome_del_canale"
+```
+
+`Telegram:ApiBaseUrl` non deve contenere il token: deve restare `https://api.telegram.org`.
+Se lo hai impostato per errore nei secrets, rimuovilo:
+
+```powershell
+dotnet user-secrets remove "Telegram:ApiBaseUrl"
+```
