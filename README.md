@@ -24,6 +24,18 @@ I log Serilog sono scritti sia su console sia nella cartella `Logs/`, con limite
 
 ## REST API
 
+In ambiente `Development` è disponibile Swagger UI:
+
+```text
+https://localhost:7143/swagger
+```
+
+Il documento OpenAPI JSON è disponibile qui:
+
+```text
+https://localhost:7143/swagger/v1/swagger.json
+```
+
 - `POST /api/telegram/messages`
 
   Body:

@@ -1,3 +1,4 @@
+using Microsoft.OpenApi;
 using Serilog;
 using SimpleTelegramBot.Components;
 using SimpleTelegramBot.Endpoints;
@@ -13,6 +14,17 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "SimpleTelegramBot API",
+        Version = "v1",
+        Description = "REST API per inviare messaggi Telegram e consultare la memoria delle richieste."
+    });
+});
 
 builder.Services
     .AddOptions<TelegramOptions>()
@@ -57,6 +69,16 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleTelegramBot API v1");
+        options.RoutePrefix = "swagger";
+    });
+}
 
 if (corsOptions.AllowedOrigins.Length > 0)
 {

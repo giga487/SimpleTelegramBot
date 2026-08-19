@@ -16,13 +16,20 @@ public static class TelegramApiEndpoints
             .WithTags("Telegram");
 
         api.MapPost("/messages", SendMessageAsync)
-            .WithName("SendTelegramMessage");
+            .WithName("SendTelegramMessage")
+            .Accepts<SendTelegramMessageRequest>("application/json")
+            .Produces<SendTelegramMessageResponse>(StatusCodes.Status200OK)
+            .ProducesValidationProblem()
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status502BadGateway);
 
         api.MapGet("/requests", GetRequests)
-            .WithName("GetTelegramRequests");
+            .WithName("GetTelegramRequests")
+            .Produces<RequestHistorySnapshot>(StatusCodes.Status200OK);
 
         api.MapDelete("/requests", ClearRequests)
-            .WithName("ClearTelegramRequests");
+            .WithName("ClearTelegramRequests")
+            .Produces(StatusCodes.Status204NoContent);
 
         return endpoints;
     }
