@@ -1,0 +1,44 @@
+﻿@page "/"
+
+<PageTitle>Simple Telegram Bot</PageTitle>
+
+<h1>Simple Telegram Bot</h1>
+
+<p class="lead">
+    Applicazione Blazor Server con REST API per inviare messaggi a un canale Telegram e consultare la memoria delle richieste.
+</p>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Invio messaggio</h2>
+                <p>
+                    La pagina di invio usa JavaScript statico e chiama <code>POST /api/telegram/messages</code>,
+                    quindi non dipende da un circuito Blazor Server.
+                </p>
+                <a class="btn btn-primary" href="send">Apri invio messaggio</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <h2 class="h5">Riepilogo richieste</h2>
+                <p>
+                    Visualizza le ultime richieste in memoria, raggruppate per <code>Caller</code>, e consente di svuotarle.
+                </p>
+                <a class="btn btn-outline-primary" href="requests">Apri riepilogo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="mt-4">
+    <h2 class="h4">REST API</h2>
+    <ul>
+        <li><code>POST /api/telegram/messages</code> con body JSON <code>{ "caller": "...", "message": "..." }</code>.</li>
+        <li><code>GET /api/telegram/requests?take=20&amp;caller=nome</code> per leggere le ultime richieste, con <code>caller</code> opzionale.</li>
+        <li><code>DELETE /api/telegram/requests</code> per cancellare la memoria accumulata.</li>
+    </ul>
+</section>

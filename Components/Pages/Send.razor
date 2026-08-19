@@ -1,0 +1,26 @@
+@page "/send"
+
+<PageTitle>Invia messaggio Telegram</PageTitle>
+
+<h1>Invia messaggio Telegram</h1>
+
+<p class="text-muted">
+    Il form invia il messaggio tramite REST API (<code>POST /api/telegram/messages</code>) senza gestire eventi Blazor Server.
+</p>
+
+<form class="telegram-form" data-telegram-send-form data-api-url="/api/telegram/messages">
+    <div class="mb-3">
+        <label class="form-label" for="telegram-caller">Chi invia</label>
+        <input class="form-control" id="telegram-caller" name="caller" maxlength="120" autocomplete="name" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="telegram-message">Messaggio</label>
+        <textarea class="form-control" id="telegram-message" name="message" rows="7" maxlength="4096" required></textarea>
+        <div class="form-text">Massimo 4096 caratteri, limite nativo di Telegram per un messaggio.</div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Invia al canale Telegram</button>
+
+    <div class="telegram-status mt-3" role="status" aria-live="polite" data-send-status></div>
+</form>
